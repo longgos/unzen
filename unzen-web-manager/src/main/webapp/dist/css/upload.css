@@ -1,0 +1,98 @@
+.mask{
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #000;
+    position: fixed;
+    opacity: 0.3;
+    z-index: 99999;
+    display: none;
+}
+.wu-example{
+	max-width: 580px;
+    margin: 0 auto;
+	position: fixed;
+    z-index: 100000;
+    left: 0;
+    right: 0;
+    top: 40px;
+    display: none;
+}
+
+.cl {
+	width: 100px;
+	height: 100px;
+	cursor: url(${ctxStatic}/images/big.cur), auto;
+}
+
+.demo {
+/* 	width: 580px; */
+	margin: 30px auto;
+	padding: 10px 20px;
+/* 	border: 2px solid #ccc; */
+	background-color: #fff;
+}
+
+.demo h3 {
+	line-height: 40px;
+	font-weight: bold;
+}
+
+.file-item {
+	float: left;
+	position: relative;
+	width: 110px;
+	height: 110px;
+	margin: 0 20px 20px 0;
+	padding: 4px;
+}
+.usecard{
+	
+}
+.file-item .info {
+	overflow: hidden;
+}
+
+.uploader-list {
+	width: 100%;
+	overflow: hidden;
+	border: 1px solid #cfcfcf;
+}
+
+.buttions {
+	width: 100%;
+	height: 30px;
+	box-sizing: border-box;
+}
+
+.buttions .btns {
+	line-height: 30px;
+	color: #fff;
+}
+
+.buttions .btns .begin {
+	background: #00b7ee;
+	color: #fff;
+	border-color: transparent;
+	padding: 0 18px;
+	display: inline-block;
+	border-radius: 3px;
+	margin-left: 10px;
+	cursor: pointer;
+	font-size: 14px;
+	float: left;
+}
+
+.buttions .btns .cancel {
+	background-color: #565656;
+	color: #fff;
+	border-color: transparent;
+	padding: 0 18px;
+	display: inline-block;
+	border-radius: 3px;
+	margin-left: 10px;
+	cursor: pointer;
+	font-size: 14px;
+	float: left;
+}

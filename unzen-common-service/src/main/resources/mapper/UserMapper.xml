@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unzen.common.dao.UserDao">
+    <resultMap type="com.unzen.common.core.persist.entity.UserPO" id="UserResult">
+    	<result property="id" column="id" />
+    	<result property="created" column="created" />
+    	<result property="email" column="email" />
+    	<result property="lastLogin" column="last_login" />
+    	<result property="mobile" column="mobile" />
+    	<result property="password" column="password" />
+    	<result property="status" column="status" />
+    	<result property="username" column="username" />
+    	<result property="name" column="name" />
+    	<result property="avatar" column="avatar" />
+    	<result property="updated" column="updated" />
+    	<result property="gender" column="gender" />
+    	<result property="roleId" column="role_id" />
+    	<result property="source" column="source" />
+    	<result property="activeEmail" column="active_email" />
+    	<result property="comments" column="comments" />
+    	<result property="fans" column="fans" />
+    	<result property="favors" column="favors" />
+    	<result property="follows" column="follows" />
+    	<result property="posts" column="posts" />
+    	<result property="signature" column="signature" />
+    </resultMap>
+	<sql id="userColumns">
+		a.id,
+		a.created,
+		a.email,
+		a.last_login,
+		a.mobile,
+		a.password,
+		a.status,
+		a.username,
+		a.name,
+		a.avatar,
+		a.updated,
+		a.gender,
+		a.role_id,
+		a.source,
+		a.active_email,
+		a.comments,
+		a.fans,
+		a.favors,
+		a.follows,
+		a.posts,
+		a.signature
+	</sql>
+	
+	<sql id="userApplicantJoins"> 
+	</sql>
+    
+	<select id="get" resultMap="UserResult">
+		SELECT 
+			<include refid="userColumns"/>
+		FROM mto_users a
+		<include refid="userApplicantJoins"/>
+		<where>
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="username !=null and username !=''">
+				AND a.username = #{username}
+			</if>
+			<if test="email !=null and email !=''">
+				AND a.email = #{email}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findAll" resultMap="UserResult">
+		SELECT 
+			<include refid="userColumns"/>
+		FROM mto_users a
+		<include refid="userApplicantJoins"/>
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findAllByStatus" resultMap="UserResult">
+		SELECT 
+			<include refid="userColumns"/>
+		FROM mto_users a
+		<include refid="userApplicantJoins"/>
+		<where>
+			<if test="null != status || ''!=status">
+				AND a.status = #{status}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findAllByIdIn" resultMap="UserResult">
+		SELECT
+			<include refid="userColumns"/>
+		FROM mto_users a
+		<include refid="userApplicantJoins"/>
+		<where>
+			a.id IN
+			<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</where>
+	</select>	
+	<select id="findTop12ByOrderByFansDesc" resultMap="UserResult">
+		SELECT
+			<include refid="userColumns"/>
+		FROM mto_users a
+		<include refid="userApplicantJoins"/>
+		ORDER BY a.fans DESC
+	</select>
+	
+	<select id="getRoles" resultMap="UserResult">
+		SELECT	
+			<include refid="userColumns"/>
+		FROM mto_users a
+		<include refid="userApplicantJoins"/>
+		ORDER BY a.fans DESC
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO mto_users(
+			id,
+			created,
+			email,
+			last_login,
+			mobile,
+			password,
+			status,
+			username,
+			name,
+			avatar,
+			updated,
+			gender,
+			role_id,
+			source,
+			active_email,
+			comments,
+			fans,
+			favors,
+			follows,
+			posts,
+			signature
+		) VALUES (
+			#{id},
+			#{created},
+			#{email},
+			#{last_login},
+			#{mobile},
+			#{password},
+			#{status},
+			#{username},
+			#{name},
+			#{avatar},
+			#{updated},
+			#{gender},
+			#{role_id},
+			#{source},
+			#{active_email},
+			#{comments},
+			#{fans},
+			#{favors},
+			#{follows},
+			#{posts},
+			#{signature}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE mto_users 	
+		<set>	
+			<!-- <if test="null != id">		
+				id = #{id},
+			</if> -->
+			<if test="null != created">
+				created = #{created},	
+			</if>
+			<if test="null != email">
+				email = #{email},
+			</if>
+			<if test="null != lastLogin">
+				last_login = #{lastLogin},
+			</if>
+			<if test="null != mobile">
+				mobile = #{mobile},
+			</if>
+			<if test="null != password">
+				password = #{password},
+			</if>
+			<if test="null != status">
+				status = #{status},
+			</if>
+			<if test="null != username">
+				username = #{username},
+			</if>
+			<if test="null != name">
+				name = #{name},
+			</if>
+			<if test="null != avatar">
+				avatar = #{avatar},
+			</if>
+			<if test="null != updated">
+				updated = #{updated},
+			</if>
+			<if test="null != gender">
+				gender = #{gender},
+			</if>
+			<if test="null != roleId">
+				role_id = #{roleId},
+			</if>
+			<if test="null != source">
+				source = #{source},
+			</if>
+			<if test="null != activeEmail">
+				active_email = #{activeEmail},
+			</if>
+			<if test="null != comments">
+				comments = #{comments},
+			</if>
+			<if test="null != fans">
+				fans = #{fans},
+			</if>
+			<if test="null != favors">
+				favors = #{favors},
+			</if>
+			<if test="null != follows">
+				follows = #{follows},
+			</if>
+			<if test="null != posts">
+				posts = #{posts},
+			</if>
+			<if test="null != signature">
+				signature = #{signature},
+			</if>
+
+	</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM mto_users
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

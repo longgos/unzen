@@ -1,0 +1,135 @@
+@CHARSET "UTF-8";
+body {
+	padding: 0 !important;
+	background-color: #fff !important;
+}
+.content{
+	margin-left: 0 auto;
+	margin-right: 0 auto;
+	padding: 1px 20px;
+	position: relative;
+}
+.blog-title .ava{
+	background-color: #000;
+}
+
+.user-avatar{
+	background: #666 50% 50% no-repeat;
+    background-color: #FAFAFA;
+    border-color: #FAFAFA;
+    background-size: 106px 106px;
+    display: block;
+    height: 106px;
+    width: 106px;
+    border: 4px solid #f6f6f6;
+    position: relative;
+}
+
+@media (max-width: 568px){
+	.user-avatar {
+	    background-size: 80px 80px;
+	    border-radius: 3px;
+	    height: 80px;
+	    width: 80px;
+	    border: 3px solid #f6f6f6;
+	}
+}
+
+.blog-title figure a{
+    border: 4px solid #f6f6f6;
+    display: inline-block;
+    border-radius: 50%;
+    box-sizing: content-box;
+}
+.blog-title figure img{
+	width: 106px;
+	height: 106px;
+}
+.avatar-wrapper{
+	position: absolute;
+    left: 50%;
+    margin-left: -57px;
+    top: -80px;
+}
+
+@media (max-device-width: 568px){
+	.avatar-wrapper{
+	    margin-left: -40px;
+        top: -60px;
+	}
+}
+@media (max-width: 992px) {
+	.blog-title h1{
+	    font-size: 36px;
+	    line-height: 1.2;
+	    margin: 30px 0 10px;
+	    word-wrap: break-word;
+	}
+}
+@media (min-width: 992px) {
+	.blog-title h1{
+	    font-size: 56px;
+	    line-height: 1.2;
+	    margin: 40px 0 10px;
+	    word-wrap: break-word;
+	}
+}
+
+.tn-list{
+	width: 100%;
+	background-color: #fff;
+	text-align: center;
+}
+.tn-list div{
+    display: inline-block;
+    width: 32%;
+    font-size: 14px;
+   /*  height: 30px;
+    line-height: 30px; */
+}
+.wrap{
+	margin-top: 0 !important;
+}
+.border-a{
+	border-bottom: 2px solid #337ab7;
+	color: #337ab7;
+}
+
+.tab-bar{
+	padding: 0 15px;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+}
+.bars{
+	height: 45px;
+}
+.KGiwt{
+	background-color: #fff;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 44px;
+    border-top: 1px solid rgba(0,0,0,.0975);
+}
+.q02Nz{
+	width: 19.5%;
+	height: 100%;
+    text-align: center;
+    display: inline-block;
+    float: left;
+}
+.bar-group{
+    display: inline-block;
+    font-size: 24px;
+    margin: 0 auto;
+    line-height: 44px !important;
+    color: #262626;
+}
+
+@media (min-width: 992px) {
+	.tab-bar{
+		display: none;
+	}	
+}

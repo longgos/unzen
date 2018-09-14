@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unzen.common.dao.CommentDao">
+    <resultMap type="com.unzen.common.core.persist.entity.CommentPO" id="CommentResult">
+    	<result property="id" column="id" />
+		<result property="toId" column="to_id"/>
+		<result property="pid" column="pid"/>
+		<result property="content" column="content"/>
+		<result property="created" column="created"/>
+		<result property="authorId" column="author_id"/>
+		<result property="status" column="status"/>
+    </resultMap>
+	<sql id="commentColumns">
+		a.id,
+		a.to_id,
+		a.pid,
+		a.content,
+		a.created,
+		a.author_id,
+		a.status
+	</sql>
+	
+	<sql id="cmbApplicantJoins"> 
+	</sql>
+    
+	<select id="get" resultMap="CommentResult">
+		SELECT 
+			<include refid="commentColumns"/>
+		FROM mto_comments a
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			<if test="id != null and id != ''">
+				AND id = #{id}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findAll" resultMap="CommentResult">
+		SELECT 
+			<include refid="commentColumns"/>
+		FROM mto_comments a
+		<include refid="cmbApplicantJoins"/>
+	</select>
+	
+	
+	
+	<insert id="insert">
+		INSERT INTO mto_comments(
+			id,
+			to_id,
+			pid,
+			content,
+			created,
+			author_id,
+			status
+		) VALUES (
+			#{id},
+			#{toId},
+			#{pid},
+			#{content},
+			#{created},
+			#{authorId},
+			#{status}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE mto_comments 	
+		<set>	
+			<if test="null != id">		
+			id = #{id},
+			</if>
+			<if test="null != toId">		
+			to_id = #{toId},
+			</if>
+			<if test="null != pid">		
+			pid = #{pid},
+			</if>
+			<if test="null != content">		
+			content = #{content},
+			</if>
+			<if test="null != created">		
+			created = #{created},
+			</if>
+			<if test="null != authorId">		
+			author_id = #{authorId},
+			</if>
+			<if test="null != status">		
+			status = #{status},
+			</if>
+
+	</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM mto_comments
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteAllByIdIn">
+		DELETE FROM mto_comments
+		WHERE id IN 
+		<foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
+	       #{item}
+	   </foreach>
+	</update>
+	
+</mapper>

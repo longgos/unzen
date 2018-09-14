@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unzen.common.dao.PostDao">
+    <resultMap type="com.unzen.common.core.persist.entity.PostPO" id="PostResult">
+    	<result property="id" column="id" />
+    	<result property="channelId" column="channel_id" />
+    	<result property="title" column="title" />
+    	<result property="summary" column="summary" />
+    	<result property="tags" column="tags" />
+    	<result property="authorId" column="author_id" />
+    	<result property="editor" column="editor" />
+    	<result property="created" column="created" />
+    	<result property="favors" column="favors" />
+    	<result property="comments" column="comments" />
+    	<result property="views" column="views" />
+    	<result property="status" column="status" />
+    	<result property="featured" column="featured" />
+    	<result property="weight" column="weight" />
+    	<result property="picturesPath" column="pictures_path" />
+    	<result property="videoPath" column="video_path" />
+    	<result property="audioPath" column="audio_path" />
+    </resultMap>
+    
+    <resultMap type="com.unzen.common.core.persist.param.PostParam" id="PostParamResult" extends="PostResult">
+    	<result property="ord" column="ord" />
+    </resultMap>
+	<sql id="postColumns">
+		a.id,
+		a.channel_id,
+		a.title,
+		a.summary,
+		a.tags,
+		a.author_id,
+		a.editor,
+		a.created,
+		a.favors,
+		a.comments,
+		a.views,
+		a.status,
+		a.featured,
+		a.weight,
+		a.pictures_path,
+		a.video_path,
+		a.audio_path
+	</sql>
+	
+	<sql id="cmbApplicantJoins"> 
+	</sql>
+    
+	<select id="get" resultMap="PostResult">
+		SELECT 
+			<include refid="postColumns"/>
+		FROM mto_posts a
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND id = #{id}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findAll" resultMap="PostParamResult">
+		SELECT 
+			<include refid="postColumns"/>
+		FROM mto_posts a
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			<if test="channelId != null and channelId != ''">
+				AND a.channel_id = #{channelId}
+			</if>
+			<if test="title != null and title != ''">
+				AND a.title LIKE CONCAT('%',#{title},'%')
+			</if>
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+		</where>
+		ORDER BY created DESC ,favors DESC ,weight DESC 
+		<!-- <choose>
+			<when test="ord == 'newest'">
+				a.created DESC
+			</when>
+			<when test="ord == 'hottest'">
+				a.views DESC
+			</when>
+			<when test="ord == 'favors'">
+				a.comments DESC
+			</when>
+		</choose> -->
+	</select>
+	
+	<select id="findAllByIdIn" resultMap="PostResult" >
+		SELECT 
+			<include refid="postColumns"/>
+		FROM mto_posts a
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			AND id IN 
+			<foreach item="item" index="index" collection="ids" 
+				open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</where>
+	</select>
+	
+	<select id="findAllByAuthorIdOrderByCreatedDesc" resultMap="PostResult">
+		SELECT
+				<include refid="postColumns"/>
+		FROM mto_posts a
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			<if test="authorId != null and authorId != ''">
+				AND a.author_id = #{authorId}
+			</if>
+		</where>
+		ORDER BY a.created DESC
+	</select>
+	
+	<select id="findTop5ByFeaturedGreaterThanOrderByCreatedDesc" resultMap="PostResult">
+		SELECT
+				<include refid="postColumns"/>
+		FROM mto_posts a
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			<if test="featured != null and featured != ''">
+				AND a.featured = #{featured}
+			</if>
+		</where>
+		ORDER BY a.created DESC
+	</select>
+	
+	<select id ="findTop10ByOrderByViewsDesc" resultMap="PostResult">
+		SELECT
+			<include refid="postColumns"/>
+		FROM mto_posts a
+		<include refid="cmbApplicantJoins"/>
+		ORDER BY a.views DESC
+<!-- 		LIMIT 10; -->
+	</select>
+	
+	<select id ="findTop10ByOrderByCreatedDesc" resultMap="PostResult">
+		SELECT
+			<include refid="postColumns"/>
+		FROM mto_posts a
+		<include refid="cmbApplicantJoins"/>
+		ORDER BY a.created DESC
+<!-- 		LIMIT 10; -->
+	</select>
+	
+	<select id="maxWeight" resultType="java.lang.Integer">
+		select coalesce(max(weight), 0) FROM mto_posts
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO mto_posts(
+			id,
+			channel_id,
+			title,
+			summary,
+			tags,
+			author_id,
+			editor,
+			created,
+			favors,
+			comments,
+			views,
+			status,
+			featured,
+			weight,
+			pictures_path,
+			video_path,
+			audio_path
+		) VALUES (
+			#{id},
+			#{channelId},
+			#{title},
+			#{summary},
+			#{tags},
+			#{authorId},
+			#{editor},
+			#{created},
+			#{favors},
+			#{comments},
+			#{views},
+			#{status},
+			#{featured},
+			#{weight},
+			#{picturesPath},
+			#{videoPath},
+			#{audioPath}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE mto_posts 	
+		<set>	
+			<if test="null != id">
+				id = #{id},
+			</if>
+			<if test="null != channelId">
+				channel_id = #{channelId},
+			</if>
+			<if test="null != title">
+				title = #{title},
+			</if>
+			<if test="null != summary">
+				summary = #{summary},
+			</if>
+			<if test="null != tags">
+				tags = #{tags},
+			</if>
+			<if test="null != authorId">
+				author_id = #{authorId},
+			</if>
+			<if test="null != editor">
+				editor = #{editor},
+			</if>
+			<if test="null != created">
+				created = #{created},
+			</if>
+			<if test="null != favors">
+				favors = #{favors},
+			</if>
+			<if test="null != comments">
+				comments = #{comments},
+			</if>
+			<if test="null != views">
+				views = #{views},
+			</if>
+			<if test="null != status">
+				status = #{status},
+			</if>
+			<if test="null != featured">
+				featured = #{featured},
+			</if>
+			<if test="null != weight">
+				weight = #{weight},
+			</if>
+			<if test="null != picturesPath">
+				pictures_path = #{picturesPath},
+			</if>
+			<if test="null != videoPath">
+				video_path = #{videoPath},
+			</if>
+			<if test="null != audioPath">
+				audio_path = #{audioPath}
+			</if>
+			
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM mto_posts
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
