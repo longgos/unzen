@@ -30,6 +30,7 @@ import com.unzen.web.message.web.controller.BaseController;
 import com.unzen.web.message.web.controller.desk.Views;
 
 /**
+ * 头像
  * @author langhsu
  *
  */
