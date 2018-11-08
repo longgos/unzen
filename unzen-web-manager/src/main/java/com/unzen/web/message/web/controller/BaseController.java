@@ -21,6 +21,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
@@ -38,6 +39,7 @@ import com.unzen.web.message.web.formatter.StringEscapeEditor;
  * @author langhsu
  * 
  */
+@PropertySource(value="classpath:system.properities")
 public class BaseController {
 	@Autowired
 	protected HttpSession session;

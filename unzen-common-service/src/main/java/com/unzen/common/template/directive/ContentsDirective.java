@@ -36,7 +36,7 @@ public class ContentsDirective extends TemplateDirective {
 
     @Override
     public void execute(DirectiveHandler handler) throws Exception {
-        Integer pn = handler.getInteger("pn", 1);
+       // Integer pn = handler.getInteger("pn", 1);
         Integer channelId = handler.getInteger("channelId", 0);
         String order = handler.getString("order", Consts.order.NEWEST);
 
