@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unzen.common.dao.NotifyDao">
+    <resultMap type="com.unzen.common.core.persist.entity.NotifyPO" id="NotifyResult">
+    	<result property="id" column="id" />
+    	<result property="ownId" column="own_id" />
+    	<result property="fromId" column="from_id" />
+    	<result property="event" column="event" />
+    	<result property="postId" column="post_id" />
+    	<result property="created" column="created" />
+    	<result property="status" column="status" />
+    </resultMap>
+    
+	<sql id="notifyColumns">
+		a.id,
+   		a.own_id,
+    	a.from_id,
+    	a.event,
+	 	a.post_id,
+    	a.created,
+    	a.status
+	</sql>
+	
+	<sql id="notifyJoins"> 
+	</sql>
+    
+	<select id="get" resultMap="NotifyResult">
+		SELECT 
+			<include refid="notifyColumns"/>
+		FROM mto_notify a
+		<include refid="notifyJoins"/>
+		<where>
+			<if test="id != null and id != ''">
+				AND id = #{id}
+			</if>
+		</where>
+	</select>
+	
+	<select id="countByParam" resultMap="NotifyResult">
+		SELECT 
+            <include refid="notifyColumns"/>
+		FROM mto_notify a
+		<include refid="notifyJoins"/>
+		<where>
+			<if test="ownId != null and ownId !=''">
+				AND a.own_id = #{ownId}
+			</if>
+			<if test="status != null and status !=''">
+				AND a.status = #{ownId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findAll" resultMap="NotifyResult">
+		SELECT 
+			<include refid="notifyColumns"/>
+		FROM mto_notify a
+		<include refid="notifyJoins"/>
+	</select>
+	
+	<select id="findAllByStatus" resultMap="NotifyResult">
+		SELECT 
+			<include refid="notifyColumns"/>
+		FROM mto_notify a
+		<include refid="notifyJoins"/>
+		<where>
+			<if test="null != status || ''!=status">
+				AND a.status = #{status}
+			</if>
+		</where>
+	</select>
+	
+	
+	<insert id="insert">
+		INSERT INTO mto_notify(
+			a.id,
+	   		a.ownId,
+	    	a.fromId,
+	    	a.event,
+		 	a.postId,
+	    	a.created,
+	    	a.status
+		) VALUES (
+			#{id},
+   			#{ownId},
+	    	#{fromId},
+	    	#{event},
+		 	#{postId},
+	    	#{created},
+	    	#{status}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE mto_notify 	
+		<set>	
+			<if test="null != id">		
+				id = #{id},
+			</if>
+			<if test="null != ownId">		
+				own_id = #{ownId},
+			</if>
+			<if test="null != fromId">		
+	    		from_id = #{fromId},
+	    	</if>
+	    	<if test="null != event">		
+	    		event = #{event},
+	    	</if>
+	    	<if test="null != postId">		
+		 		post_id = #{postId},
+		 	</if>
+		 	<if test="null != created">		
+	    		created = #{created},
+	    	</if>
+	    	<if test="null != status">		
+	    		status  = #{status},
+	    	</if>
+	</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM mto_notify
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

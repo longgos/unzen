@@ -41,6 +41,8 @@ public class UserPO  implements Serializable{
 	private Date updated;//修改时间
 	
 	private int gender;   // 性别
+	
+	private String openId;//微信openId
 
 	private String email;  // 邮箱
 
@@ -67,8 +69,8 @@ public class UserPO  implements Serializable{
 	/** 权限菜单 */
 	private List<AuthMenuPO> roleAuths = new ArrayList<>();
 
-	private int activeEmail; // 邮箱激活状态
-	private int status; // 用户状态
+	private int activeEmail; // 邮箱激活状态 0：启动；1：禁用
+	private int status; // 用户状态 0：启动；1：禁用
 	
 	private int roleId ;//权限id
 
@@ -262,6 +264,14 @@ public class UserPO  implements Serializable{
 
 	public void setRoleAuths(List<AuthMenuPO> roleAuths) {
 		this.roleAuths = roleAuths;
+	}
+
+	public String getOpenId() {
+		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
 	}
 
 	

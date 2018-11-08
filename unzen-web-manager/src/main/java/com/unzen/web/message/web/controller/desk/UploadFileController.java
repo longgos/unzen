@@ -1,24 +1,14 @@
 package com.unzen.web.message.web.controller.desk;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,20 +20,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
-import com.unzen.base.context.Global;
 import com.unzen.base.context.UnzenConsts;
 import com.unzen.base.lang.Consts;
 import com.unzen.base.utils.DateFormatUtils;
 import com.unzen.base.utils.FileUtils;
 import com.unzen.base.utils.model.DataModel;
 import com.unzen.common.core.data.AccountProfile;
+import com.unzen.common.core.data.User;
 import com.unzen.common.core.persist.entity.PostPO;
+import com.unzen.common.core.persist.entity.UserPO;
+import com.unzen.common.core.persist.param.UserParam;
 import com.unzen.common.service.PostService;
+import com.unzen.common.service.UserService;
 import com.unzen.web.message.web.controller.BaseController;
 
 @Controller
@@ -57,6 +48,8 @@ public class UploadFileController extends BaseController{
 
 	@Autowired
 	private PostService poService;
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping(value ="/tomytest")
 	public String tomytest(){
@@ -65,13 +58,9 @@ public class UploadFileController extends BaseController{
 	
 	@ResponseBody
 	@RequestMapping(method={RequestMethod.POST}, value="uploads")
-	public String uploads (int fileCount,int requests,HttpServletRequest request,Model model, MultipartFile[] file){
-		AccountProfile up = getSubject().getProfile();
-		Long userId = up.getId();
-//		List<String> list = Consts.PATHS.get(userId);
+	public String uploads (HttpServletRequest request,Model model, MultipartFile[] file){
 		try{
-			//文件夹地址
-			String fileDir = Consts.FILEPATH;
+			String fileDir = Consts.FILEPATH;//文件夹地址
 			File f = new File(fileDir);
 			//如果文件夹不存在
 			if(!f.exists()){
@@ -80,11 +69,6 @@ public class UploadFileController extends BaseController{
 			String fileName = null;
 			for (int i = 0; i < file.length; i++) {
 				fileName = upload(fileDir,file[i]);
-				/*if(list==null){//第一次
-					list = new ArrayList<String>();
-				}
-				list.add(fileName);
-				Consts.PATHS.put(userId, list);*/
 			}
 			return fileName;
 		}catch(Exception e){
@@ -138,6 +122,7 @@ public class UploadFileController extends BaseController{
 			//保存文件对象
 			File serverFile = new File(path+fileName);
 			file.transferTo(serverFile);
+			logger.info("生成文件地址："+path+fileName);
 			return fileName;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -257,12 +242,22 @@ public class UploadFileController extends BaseController{
 	@RequestMapping(value="/saveContents")
 	@ResponseBody
 	public int saveContents(String jsonobj,Model model){
-		AccountProfile up = getSubject().getProfile();
 		String newJson = jsonobj.replaceAll("&quot;","\"");
 		Map<String, Object> map = JSON.parseObject(newJson);
 		PostPO po = new PostPO();
-		po.setAuthorId(up.getId());
-		po.setChannelId((int)map.get("channelId"));
+		po.setChannelId(UnzenConsts.CHANNEL_1);
+		String openId = map.get("openId").toString();
+		if(!StringUtils.isEmpty(openId)){
+			UserParam param = new UserParam();
+			param.setOpenId(openId);
+			UserPO user = userService.get(param);
+			if(!StringUtils.isEmpty(user)){
+				po.setAuthorId(user.getId());
+			}
+		}else{
+			AccountProfile up = getSubject().getProfile();
+			po.setAuthorId(up.getId());
+		}
 		//内容(摘要不要了)
 		po.setSummary(map.get("contents").toString());
 		po.setCreated(new Date());

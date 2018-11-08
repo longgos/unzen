@@ -9,6 +9,8 @@
 */
 package com.unzen.common.service.impl;
 
+import static org.junit.Assert.assertFalse;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -113,7 +115,7 @@ public class UserServiceImpl extends MybatisBeanUtils implements UserService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly=false)
 	public User register(User user) {
 		Assert.notNull(user, "Parameter user can not be null!");
 
@@ -142,7 +144,7 @@ public class UserServiceImpl extends MybatisBeanUtils implements UserService {
 		po.setActiveEmail(EntityStatus.ENABLED);
 		po.setCreated(now);
 
-		userDao.update(po);
+		userDao.insert(po);
 
 		return BeanMapUtils.copy(po, 0);
 	}
@@ -372,6 +374,16 @@ public class UserServiceImpl extends MybatisBeanUtils implements UserService {
 		User user = BeanMapUtils.copy(userPO,0);
 		return user.getRoleAuths();
 		//return menus;
+	}
+
+	@Override
+	public User findParam(UserParam param) {
+		return userDao.findParam(param);
+	}
+
+	@Override
+	public UserPO get(UserParam param) {
+		return userDao.get(param);
 	}
 
 

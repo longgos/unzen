@@ -30,6 +30,10 @@ public class User implements Serializable {
 	private String name;
 	private String email;
 	private String mobile;
+	/** 性别 */
+	private int gender;
+	/** 微信openId */
+	private String openId;
 
 	private int posts; // 文章数
 	private int comments; // 发布评论数
@@ -38,7 +42,7 @@ public class User implements Serializable {
 	private int favors; // 收到的喜欢数
 
 	private Date created;
-	private int source; // 用户来源，主要用于第三方注册用户
+	private int source; // 用户来源，主要用于第三方注册用户 3:微信
 
 	private Date lastLogin;
 	private String signature; // 个性签名
@@ -225,6 +229,22 @@ public class User implements Serializable {
 
 	public void setRoleAuths(List<AuthMenu> roleAuths) {
 		this.roleAuths = roleAuths;
+	}
+
+	public int getGender() {
+		return gender;
+	}
+
+	public void setGender(int gender) {
+		this.gender = gender;
+	}
+
+	public String getOpenId() {
+		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
 	}
 
 	

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unzen.common.dao.ConfigDao">
+    <resultMap type="com.unzen.common.core.persist.entity.ConfigPO" id="ConfigResult">
+    	<result property="id" column="id" />
+    	<result property="type" column="type" />
+    	<result property="key" column="key_" />
+    	<result property="value" column="value" />
+    </resultMap>
+	<sql id="configColumns">
+		a.id,
+		a.type,
+		a.key_,
+		a.value
+	</sql>
+	
+	<sql id="cmbApplicantJoins">
+	</sql>
+    
+	<select id="get" resultMap="ConfigResult">
+		SELECT 
+			<include refid="configColumns"/>
+		FROM mto_config a
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND id = #{id}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findAll" resultMap="ConfigResult">
+		SELECT 
+			<include refid="configColumns"/>
+		FROM mto_config a
+		<include refid="cmbApplicantJoins"/>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO mto_config(
+			id,
+			type,
+			key_,
+			value
+		) VALUES (
+			#{id},
+			#{type},
+			#{key},
+			#{value}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE mto_config 	
+		<set>	
+			<if test="null != id">		
+			id = #{id},
+			</if>
+			<if test="null != type">		
+			type = #{type},
+			</if>
+			<if test="null != key_">		
+			key_ = #{key},
+			</if>
+			<if test="null != value">		
+			value = #{value},
+			</if>
+
+	</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM mto_config
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

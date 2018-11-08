@@ -59,6 +59,8 @@ public class PostPO implements Serializable {
 	private String videoPath;
 	/** 音频地址 */
 	private String audioPath;
+	/** 图片地址数组（小程序） */
+	private String [] picturesPathArray;
 
 	public Long getId() {
 		return id;
@@ -194,6 +196,14 @@ public class PostPO implements Serializable {
 
 	public void setAudioPath(String audioPath) {
 		this.audioPath = audioPath;
+	}
+
+	public String[] getPicturesPathArray() {
+		return picturesPathArray;
+	}
+
+	public void setPicturesPathArray(String[] picturesPathArray) {
+		this.picturesPathArray = picturesPathArray;
 	}
 	
 }

@@ -16,6 +16,7 @@ import java.util.Set;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.unzen.base.utils.model.DataPageModel;
+import com.unzen.common.core.data.User;
 import com.unzen.common.core.persist.entity.RolePO;
 import com.unzen.common.core.persist.entity.UserPO;
 import com.unzen.common.core.persist.param.UserParam;
@@ -43,5 +44,9 @@ public interface UserDao {
 	int update(UserPO po);
 
 	List<RolePO> getRoles();
+
+	int insert(UserPO po);
+
+	User findParam(UserParam param);
 
 }

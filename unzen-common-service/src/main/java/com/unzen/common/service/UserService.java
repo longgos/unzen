@@ -19,6 +19,8 @@ import com.unzen.base.utils.model.DataPageModel;
 import com.unzen.common.core.data.AccountProfile;
 import com.unzen.common.core.data.AuthMenu;
 import com.unzen.common.core.data.User;
+import com.unzen.common.core.persist.entity.UserPO;
+import com.unzen.common.core.persist.param.UserParam;
 import com.unzen.common.core.persist.utils.PageModel;
 
 
@@ -68,6 +70,8 @@ public interface UserService {
 	 * @return
 	 */
 	User get(Long id);
+	
+	UserPO get(UserParam param);
 
 	User getByUsername(String username);
 
@@ -117,4 +121,6 @@ public interface UserService {
 	List<AuthMenu> getMenuList(Long id);
 	
 	List<User> findHotUserByfans();
+
+	User findParam(UserParam param);
 }

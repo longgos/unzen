@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  	<modelVersion>4.0.0</modelVersion>
+  	
+  	<parent>
+    	<groupId>unzen.common</groupId>
+    	<artifactId>unzen</artifactId>
+    	<version>${project.version}</version>
+  	</parent>
+  	
+  	<groupId>unzen.web.manager</groupId>
+  	<artifactId>unzen-web-manager</artifactId>
+  	<packaging>war</packaging>
+  	
+  	<name>unzen-web-manager Maven Webapp</name>
+  	<url>http://maven.apache.org</url>
+  	
+  	<dependencies>
+  		<!-- 配置内置tomcat服务器 -->
+  		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+		</dependency>
+  		<dependency>
+      		<groupId>unzen.base</groupId>
+      		<artifactId>unzen-base</artifactId>
+      		<version>${project.version}</version>
+   		</dependency>
+  		<dependency>
+      		<groupId>unzen.common.service</groupId>
+      		<artifactId>unzen-common-service</artifactId>
+      		<version>${project.version}</version>
+   		</dependency>
+  		<dependency>
+      		<groupId>unzen.common.util</groupId>
+      		<artifactId>unzen-common-util</artifactId>
+      		<version>${project.version}</version>
+   		</dependency>
+   		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-ehcache</artifactId>
+		</dependency>
+   		<dependency>
+			<groupId>com.mtons.mblog</groupId>
+			<artifactId>mblog-api</artifactId>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/mblog-api-1.1.3.jar</systemPath>
+		</dependency>
+    	<dependency>
+      		<groupId>junit</groupId>
+      		<artifactId>junit</artifactId>
+      		<scope>test</scope>
+   		</dependency>
+  	</dependencies>
+  	
+  	<build>
+    	<finalName>unzen-web-manager</finalName>
+    	<resources>
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+				<includes>
+					<include>**/**</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>${basedir}/src/main/webapp</directory>
+				<!--注意此次必须要放在此目录下才能被访问到-->
+				<targetPath>META-INF/resources</targetPath>
+				<includes>
+					<include>**/**</include>
+				</includes>
+			</resource>
+		</resources>
+  		<plugins>
+		    <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-compiler-plugin</artifactId>
+		        <configuration>
+		            <source>1.7</source>
+		            <target>1.7</target>
+		        </configuration>
+		    </plugin>
+		</plugins>
+  	</build>
+</project>

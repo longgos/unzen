@@ -1,0 +1,9 @@
+.classpath
+.project
+.gitgnore
+.class
+.git
+/target/
+/.settings/
+/.git/
+

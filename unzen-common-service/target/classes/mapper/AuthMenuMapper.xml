@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unzen.common.dao.AuthMenuDao">
+    <resultMap type="com.unzen.common.core.persist.entity.AuthMenuPO" id="AuthMenuResult">
+    	<result property="id" column="id" />
+		<result property="name" column="name"/>
+		<result property="url" column="url"/>
+		<result property="sort" column="sort"/>
+		<result property="permission" column="permission"/>
+		<result property="parentId" column="parent_id"/>
+		<result property="parentIds" column="parent_ids"/>
+		<result property="icon" column="icon"/>
+    </resultMap>
+	<sql id="authMenuColumns">
+		a.id,
+		a.name,
+		a.url,
+		a.sort,
+		a.permission,
+		a.parent_id,
+		a.parent_ids,
+		a.icon
+	</sql>
+	
+	<sql id="cmbApplicantJoins"> 
+	</sql>
+    
+	<select id="get" resultMap="AuthMenuResult">
+		SELECT 
+			<include refid="authMenuColumns"/>
+		FROM mto_auth_menu a
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			<if test="id != null and id != ''">
+				AND id = #{id}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findAll" resultMap="AuthMenuResult">
+		SELECT 
+			<include refid="authMenuColumns"/>
+		FROM mto_auth_menu a
+		<include refid="cmbApplicantJoins"/>
+	</select>
+	
+	<select id="findAuthMenuByRole" resultMap="AuthMenuResult">
+		SELECT 
+			<include refid="authMenuColumns"/>
+		FROM mto_auth_menu a
+		INNER JOIN mto_role_menu b on a.id = b.menu_id
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			<if test="_parameter !=null ">
+				AND b.role_id = #{roleId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findAllByParentIdOrderBySortAsc" resultMap="AuthMenuResult">
+		SELECT 
+			<include refid="authMenuColumns"/>
+		FROM mto_auth_menu a
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			<if test="_parameter !=null ">
+				AND a.parent_id = #{parentId}
+			</if>
+		</where>
+		ORDER BY sort
+	</select>
+	
+	
+	<insert id="insert">
+		INSERT INTO mto_auth_menu(
+			id,
+			name,
+			url,
+			sort,
+			permission,
+			parent_id,
+			parent_ids,
+			icon
+		) VALUES (
+			#{id},
+			#{name},
+			#{url},
+			#{sort},
+			#{permission},
+			#{parentId},
+			#{parentIds},
+			#{icon}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE mto_auth_menu 	
+		<set>	
+			<if test="null != id">		
+			id = #{id},
+			</if>
+			<if test="null != type">		
+			name = #{name},
+			</if>
+			<if test="null != url">		
+			url = #{url},
+			</if>
+			<if test="null != sort">		
+			sort = #{sort},
+			</if>
+			<if test="null != permission">		
+			permission = #{permission},
+			</if>
+			<if test="null != parentId">		
+			parent_id = #{parentId},
+			</if>
+			<if test="null != parentIds">		
+			parent_ids = #{parentIds},
+			</if>
+			<if test="null != icon">		
+			icon = #{icon}
+			</if>
+
+	</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM mto_auth_menu
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

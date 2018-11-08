@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unzen.common.dao.PostAttributeDao">
+    <resultMap type="com.unzen.common.core.persist.entity.PostAttributePO" id="PostAttributeResult">
+    	<result property="id" column="id" />
+		<result property="content" column="content"/>
+    </resultMap>
+	<sql id="postAttributeColumns">
+		a.id,
+		a.content
+	</sql>
+	
+	<sql id="cmbApplicantJoins"> 
+	</sql>
+    
+	<select id="get" resultMap="PostAttributeResult">
+		SELECT 
+			<include refid="postAttributeColumns"/>
+		FROM mto_posts_attribute a
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			<if test="id != null and id != ''">
+				AND id = #{id}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findAll" resultMap="PostAttributeResult">
+		SELECT 
+			<include refid="postAttributeColumns"/>
+		FROM mto_posts_attribute a
+		<include refid="cmbApplicantJoins"/>
+	</select>
+	
+	
+	
+	<insert id="insert">
+		INSERT INTO mto_posts_attribute(
+			id,
+			content
+		) VALUES (
+			#{id},
+			#{content}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE mto_posts_attribute 	
+		<set>	
+			<if test="null != id">		
+			id = #{id},
+			</if>
+			<if test="null != content">		
+			content = #{content}
+			</if>
+	</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM mto_posts_attribute
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

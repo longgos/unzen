@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unzen.common.dao.FeedsDao">
+    <resultMap type="com.unzen.common.core.persist.entity.FeedsPO" id="FeedsResult">
+    	<result property="id" column="id" />
+    	<result property="ownId" column="own_id" />
+    	<result property="type" column="type" />
+    	<result property="postId" column="post_id" />
+    	<result property="authorId" column="author_id" />
+    	<result property="created" column="created" />
+    </resultMap>
+	<sql id="FeedsColumns">
+		a.id,
+		a.own_id,
+		a.type,
+		a.post_id,
+		a.author_id,
+		a.created
+	</sql>
+	
+	<sql id="cmbApplicantJoins"> 
+	</sql>
+    
+	<select id="get" resultMap="FeedsResult">
+		SELECT 
+			<include refid="FeedsColumns"/>
+		FROM mto_feeds a
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND id = #{id}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findAll" resultMap="FeedsResult">
+		SELECT 
+			<include refid="FeedsColumns"/>
+		FROM mto_feeds a
+		<include refid="cmbApplicantJoins"/>
+	</select>
+	
+	<select id="findPage" resultMap="FeedsResult">
+		SELECT 
+			<include refid="FeedsColumns"/>
+		FROM mto_feeds a
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			<if test="ownId !=null and ownId !=''">
+				AND a.own_id = #{ownId}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO mto_feeds(
+			id,
+			own_id,
+			type,
+			post_id,
+			author_id,
+			created
+		) VALUES (
+			#{id},
+			#{ownId},
+			#{type},
+			#{postId},
+			#{authorId},
+			#{created}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE mto_feeds 	
+		<set>	
+			<if test="null != id">	
+				id = #{id},	
+			</if>
+			<if test="null != ownId">	
+				own_id = #{ownId},
+			</if>	
+			<if test="null != type">	
+				type = #{type},
+			</if>	
+			<if test="null != postId">	
+				post_id = #{postId},
+			</if>	
+				
+			<if test="null != authorId">		
+				author_id = #{authorId},
+			</if>
+			<if test="null != created">		
+				created = #{created},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM mto_feeds
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

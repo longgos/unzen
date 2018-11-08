@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unzen.common.dao.ChannelDao">
+    <resultMap type="com.unzen.common.core.persist.entity.ChannelPO" id="ChannelResult">
+    	<result property="id" column="id" />
+    	<result property="name" column="name" />
+    	<result property="key" column="key_" />
+    	<result property="status" column="status" />
+    </resultMap>
+	<sql id="channelColumns">
+		a.id,
+		a.name,
+		a.key_,
+		a.status
+	</sql>
+	
+	<sql id="cmbApplicantJoins"> 
+	</sql>
+    
+	<select id="get" resultMap="ChannelResult">
+		SELECT 
+			<include refid="channelColumns"/>
+		FROM mto_channels a
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			<if test="id != null and id != ''">
+				AND id = #{id}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findAll" resultMap="ChannelResult">
+		SELECT 
+			<include refid="channelColumns"/>
+		FROM mto_channels a
+		<include refid="cmbApplicantJoins"/>
+	</select>
+	
+	<select id="findAllByStatus" resultMap="ChannelResult">
+		SELECT 
+			<include refid="channelColumns"/>
+		FROM mto_channels a
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			<if test="null != status || ''!=status">
+				AND a.status = #{status}
+			</if>
+		</where>
+	</select>
+	<select id="findAllByIdIn" resultMap="ChannelResult">
+		SELECT 
+			<include refid="channelColumns"/>
+		FROM mto_channels a
+		<include refid="cmbApplicantJoins"/>
+		<where>
+			a.id IN
+			<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</where>
+	</select>
+	
+	
+	<insert id="insert">
+		INSERT INTO mto_channels(
+			id,
+			name,
+			key_,
+			status
+		) VALUES (
+			#{id},
+			#{name},
+			#{key},
+			#{status}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE mto_channels 	
+		<set>	
+			<if test="null != id">		
+			id = #{id},
+			</if>
+			<if test="null != type">		
+			name = #{name},
+			</if>
+			<if test="null != key_">		
+			key_ = #{key},
+			</if>
+			<if test="null != value">		
+			status = #{status},
+			</if>
+
+	</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM mto_channels
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
